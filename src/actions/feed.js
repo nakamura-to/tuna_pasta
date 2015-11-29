@@ -72,7 +72,7 @@ export function fetchFeed(feed, menu) {
     const keyword = menu.activeKeyword;
     if (keyword === 'all') {
       for (let keyword of menu.keywords) {
-        let page = feed[keyword.name].page;
+        let page = feed.keywords[keyword.name].page;
         _fetchFeed(dispatch, keyword.name, page, menu.bookmarkFilter);
       }
     } else if (keyword === 'favorite') {
@@ -83,7 +83,7 @@ export function fetchFeed(feed, menu) {
         });
       });
     } else {
-      let page = feed[keyword].page;
+      let page = feed.keywords[keyword].page;
       _fetchFeed(dispatch, keyword, page, menu.bookmarkFilter);
     }
   }
@@ -176,5 +176,3 @@ function _getBookmarkCount(items) {
     }, (error) => console.log(error));
   });
 }
-
-

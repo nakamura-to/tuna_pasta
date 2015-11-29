@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/bundle.js",
   "scripts": {
-    "build" : "npm run build:js & npm run build:stylus",
+    "build": "npm run build:js & npm run build:stylus",
     "build:js": "browserify --extension=js -o dist/bundle.js src/index.js",
     "watch": "npm run watch:js & npm run watch:stylus",
     "watch:js": "watchify --extension=js -o dist/bundle.js src/index.js",
@@ -24,6 +24,7 @@
   "homepage": "https://github.com/bokuweb/tuna_pasta",
   "dependencies": {
     "dexie": "^1.2.0",
+    "immutable": "~3.7.5",
     "jsonp": "~0.2.0",
     "lodash": "^3.10.1",
     "material-ui": "^0.13.1",

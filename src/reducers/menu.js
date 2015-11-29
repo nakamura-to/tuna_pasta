@@ -1,47 +1,52 @@
 import * as types from '../constants/action-types';
+import { List, Record } from 'immutable';
 
-export default function menu(state={}, action) {
+const Menu = Record({
+  keywords: List(),
+  activeKeyword: 'all',
+  bookmarkFilter: 1,
+  bookmarkFilterX: 15,
+  keywordInput: '',
+  isMenuOpen: false
+});
+
+export default function menu(state = Menu(), action) {
   switch(action.type){
     case types.INITIALIZE_KEYWORD :
-      state.keywords = action.keywords;
-      state.activeKeyword = 'all';
-      state.bookmarkFilter = 1;
-      state.bookmarkFilterX = 15;
-      state.keywordInput = '';
-      state.isMenuOpen = false;
-      return Object.assign({}, state);
+      return Menu({keywords: List(action.keywords)});
 
     case types.SELECT_KEYWORD :
-      state.activeKeyword = action.keyword;
-      return Object.assign({}, state);
+      return state.merge({activeKeyword: action.keyword});
 
     case types.CHANGE_BOOKMARK_FILTER :
-      state.bookmarkFilter = action.value;
-      state.bookmarkFilterX = action.x;
-      return Object.assign({}, state);
+      return state.merge({
+        bookmarkFilter: action.value,
+        bookmarkFilterX: action.x
+      });
 
     case types.CHANGE_KEYWORD_INPUT :
-      state.keywordInput = action.value;
-      return Object.assign({}, state);
+      return state.merge({keywordInput: action.value});
 
     case types.ADD_KEYWORD :
-      state.activeKeyword = action.keyword;
-      state.keywordInput = '';
-      return Object.assign({}, state);
+      return state.merge({
+        activeKeyword: action.keyword,
+        keywordInput: ''
+      });
 
     case types.ADD_KEYWORD_COMPLETE :
-      state.keywords = action.keywords;
-      return Object.assign({}, state);
+      return state.merge({keywords: List(action.keywords)});
 
     case types.TOGGLE_MENU :
-      state.isMenuOpen = !state.isMenuOpen;
-      return Object.assign({}, state);
+      return state.merge({isMenuOpen: !state.isMenuOpen});
 
     case types.REMOVE_KEYWORD :
-      state.keywords = action.keywords;
-      if (state.keywords.length === 0 || action.keyword === state.activeKeyword)
-        state.activeKeyword = 'all'
-      return Object.assign({}, state);
+      let activeKeyword = state.activeKeyword;
+      if (action.keywords.length === 0 || action.keyword === state.activeKeyword)
+        activeKeyword = 'all';
+      return state.merge({
+        keywords: List(action.keywords),
+        activeKeyword
+      });
 
     default:
       return state;

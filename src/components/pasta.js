@@ -25,7 +25,7 @@ export default class Pasta extends Component {
     setInterval(() => {
       if (!this.props.feed.isInitialized) return;
       // If the number of items is not enough to scroll, polling itmes by the following timer
-      const feed = this.props.feed[this.props.menu.activeKeyword];
+      const feed = this.props.feed.keywords[this.props.menu.activeKeyword];
       const isLoadingNeeded = feed.items.length < 40 && !feed.isPageEnd && !feed.isInfiniteLoading;
       if (isLoadingNeeded && this.props.menu.activeKeyword !== 'all') {
         this.props.fetchFeed(this.props.feed, this.props.menu);
@@ -45,13 +45,13 @@ export default class Pasta extends Component {
 
   onInfiniteLoad() {
     if (this.props.menu.keywords.length === 0) return;
-    if (this.props.feed[this.props.menu.activeKeyword].isPageEnd) return;
+    if (this.props.feed.keywords[this.props.menu.activeKeyword].isPageEnd) return;
     console.log("loading..");
     this.props.fetchFeed(this.props.feed, this.props.menu);
   }
 
   elementInfiniteLoad() {
-    if (this.props.feed[this.props.menu.activeKeyword].isPageEnd) return;
+    if (this.props.feed.keywords[this.props.menu.activeKeyword].isPageEnd) return;
     return  <div className="rect-spinner"></div>;
   }
 
@@ -61,9 +61,9 @@ export default class Pasta extends Component {
 
   getItems() {
     const keyword = this.props.menu.activeKeyword;
-    const feed = this.props.feed[keyword];
+    const feed = this.props.feed.keywords[keyword];
     if (this.props.menu.keywords.length === 0) return <div>まだ記事はありません。キーワードを追加してください。</div>;
-    else if (feed.items.length === 0 && feed.isPageEnd) return <div>記事が見つかりませんでした。</div>; 
+    else if (feed.items.length === 0 && feed.isPageEnd) return <div>記事が見つかりませんでした。</div>;
     return feed.items.map((item, i) => {
       return (
         <Item
@@ -84,7 +84,7 @@ export default class Pasta extends Component {
 
   render() {
     if (!this.props.feed.isInitialized) return <div className="rect-spinner"></div>;
-    const feed = this.props.feed[this.props.menu.activeKeyword];
+    const feed = this.props.feed.keywords[this.props.menu.activeKeyword];
     return (
       <div id="container">
         <Header
@@ -118,6 +118,3 @@ export default class Pasta extends Component {
     );
   }
 }
-
-
-
